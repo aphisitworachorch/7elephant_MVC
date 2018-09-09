@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Phones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using _7Elephant.Models
+
+<h2>Phones</h2>
+
+<table class="table table-light">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Images</th>
+                <th>Add To Cart</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Phone p in ViewBag.listProduct)
+            {
+                <tr class="animated bounceIn">
+                    <td>
+                        @p.product_id
+                    </td>
+                    <td>
+                        @p.brand
+                    </td>
+                    <td>
+                        @p.model
+                    </td>
+                    <td>
+                        @p.price
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/Content/img/"+@p.url)" style="width: 200px;height: auto;"/>
+                    </td>
+                    <td>
+                    <td>@Html.ActionLink("Add to Cart", "AddtoCart", "ShoppingCart", new { id = p.product_id }, new { @class = "btn btn-success" })</td>
+                </tr>
+            }
+
+        </tbody>
+</table>

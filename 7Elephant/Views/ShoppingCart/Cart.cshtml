@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ShoppingCart</h2>
+@using _7Elephant.Models;
+@using _7Elephant.Controllers;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+
+<table class="table table-light">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Images</th>
+            <th>Quantity</th>
+            <th>Sub Total</th>
+        </tr>
+    </thead>
+    @{decimal summary = 0; }
+    <tbody>
+        @foreach (item it in (List<item>)Session["cart"])
+        {
+            summary += (it.Phone.price.Value * it.Quantity);
+            <tr>
+                <td>@it.Phone.product_id</td>
+                <td>@it.Phone.brand</td>
+                <td>@it.Phone.model</td>
+                <td>@it.Phone.price</td>
+                <td><img src=@Url.Content("~/Content/img/"+@it.Phone.url) style="width: 300px;height: auto;"/></td>
+                <td>@it.Quantity</td>
+                <td>@(it.Phone.price * it.Quantity)</td>
+                <td>@Html.ActionLink("ลบจากรายการ", "Delete", "ShoppingCart", new { id = it.Phone.product_id }, new { @class = "btn btn-danger" })</td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="7" class="text-primary">Summary </td>
+            <td>@summary</td>
+        </tr>
+    </tbody>
+
+    
+</table>
+@Html.ActionLink("Continue Shopping", "Index", "Phone", null, new { @class = "btn btn-success" })
+
+@using (Html.BeginForm("Save_Order", "ShoppingCart", FormMethod.Post))
+{
+    if (Request.IsAuthenticated)
+    {
+        var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        var currentUser = manager.FindById(User.Identity.GetUserId());
+
+                <div class="text-center">
+                    Your information: <br />
+                    @currentUser.name<br />
+                    @currentUser.address<br />
+                    @currentUser.PhoneNumber<br />
+                </div>
+            <center>
+                <div class="form-group">
+                    <label class="control-label">Please Enter Credit Card Number : </label>
+                    <input type="text" name="credit_card" id="credit_card" class="form-control" />
+                </div>
+            </center>
+
+                <input type="submit" value="Place Order" class="btn btn-success pull-right" />
+     }
+}
