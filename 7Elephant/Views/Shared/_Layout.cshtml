@@ -30,6 +30,9 @@
                 <li class="nav-item">
                     @Html.ActionLink("Management", "Index", "PhonesManagement", null, htmlAttributes: new { @class = "nav-link" })
                 </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Orders Management","Index","Orders", null, htmlAttributes: new { @class = "nav-link" })
+                </li>
             </ul>
             @Html.Partial("_LoginPartial")
         </div>
